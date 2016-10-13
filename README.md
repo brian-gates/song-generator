@@ -1,7 +1,14 @@
-Install and start Neo4j.
+![Example of the interface](http://i.imgur.com/wa6T4j4.png)
 
-Run this:
+1st place winner at https://github.com/neo4j-meetups/graph-hack-sfo-2016
 
+# Run it yourself
+
+## Prepare the Data
+
+Install [Neo4j](https://neo4j.com/download/), then run the following queries.
+
+Load the data:
 ```
 LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/fivethirtyeight/data/master/hip-hop-candidate-lyrics/genius_hip_hop_lyrics.csv" AS row
 MERGE (c:Candidate {name: row.candidate})
@@ -19,11 +26,13 @@ MERGE (a)-[r:PERFORMS]->(song)
 SET r.data = row.album_release_date
 ```
 
+Get the last word of each line for rhyming.
 ```
 match (n:Line)
 set n.lastWord = split(n.text, ' ')[-1..];
 ```
 
+Create relationships between lines based on their rhyming qualities.
 ```
 match (line1:Line), (line2:Line)
 where line1 <> line2
@@ -32,14 +41,13 @@ MERGE (line1)-[r:phonetic]->(line2)
 set r.quality = delta
 ```
 
+Create a few indexes for performance
 ```
-create index on :Candidate(name)
-```
-```
-create index on :Sentiment(type)
+create index on :Candidate(name);
+create index on :Sentiment(type);
 ```
 
-Start the server
+## Start the server
 
 ```
 node app.js
