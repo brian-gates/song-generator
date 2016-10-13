@@ -1,0 +1,18 @@
+{
+  "name": "song-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "cypher-stream": "^1.0.1",
+    "express": "^4.14.0",
+    "highland": "^2.10.0",
+    "ramda": "^0.22.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
