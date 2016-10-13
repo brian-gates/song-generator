@@ -1,0 +1,48 @@
+<script src="public/jquery-3.1.1.min.js"></script>
+<h1>Song Generator</h1>
+<form>
+  <select name="candidate" id="candidates">
+  </select>
+  <select name="like">
+    <option value='1'>For</option>
+    <option value='0'>Against</option>
+  </select>
+  <button id='singit'>Sing it!</button>
+</form>
+
+<div class="lyrics">
+</div>
+
+<script>
+
+$.getJSON('/candidates', candidates => {
+  candidates.forEach(result => {
+    var name = result.candidate.name;
+    $('#candidates').append(`
+      <option name="${name}" value="${name}">${name}</option>
+    `)
+  });
+  $('#candidates').val('Donald Trump');
+});
+
+var sing = line => {
+  $('.lyrics').append(`<p>${line}</p>`);
+  var msg = new SpeechSynthesisUtterance(line);
+  var voices = window.speechSynthesis.getVoices();
+  window.speechSynthesis.speak(msg);
+}
+
+$( "form" ).on( "submit", function( event ) {
+  event.preventDefault();
+  $.getJSON('/lyrics?'+$( this ).serialize(), results => {
+    $('.lyrics').html('');
+    if(!results.length) {
+      $('.lyrics').html('No results');
+    }
+    results.forEach(result => {
+      sing(result.line1);
+      sing(result.line2);
+    })
+  })
+});
+</script>

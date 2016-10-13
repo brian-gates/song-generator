@@ -8,8 +8,10 @@ cypher = R.compose($, cypher);
 
 var log = console.log.bind(console);
 
+app.use('/public', express.static('public'));
+
 app.get('/', function (req, res) {
-  res.send('Hello World!');
+  res.sendFile('./index.html', { root: __dirname + '/public/' });
 });
 
 app.get('/candidates', (req, res) => {
